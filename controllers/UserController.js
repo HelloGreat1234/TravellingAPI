@@ -1,22 +1,55 @@
-const getUser = (req,res) => {
-    res.send("Get this singular user")
-}
+const User = require('../models/user')
+const asyncWrapper = require('../middlewares/aync')
 
-const CreateUser = (req,res) => {
-    res.send("Creating the user")
-}
 
-const DeleteUser = (req,res) => {
-    res.send("Deleting the user")
-}
+const getUser = asyncWrapper ( async (req,res) => {
+    const {id} = req.params
+    console.log(id)
+    const user = await User.findById(id);
+    if(!user){
+        res.status(404).json({msg : "No such user Exists"});
+    }
+    res.status(200).json(user)
+})
 
-const UpdateUser = (req,res) => {
-    res.send("Updating the user")
-}
+const CreateUser = asyncWrapper( async (req,res)=>{
+    const newUser = await User.create(req.body)
+    res.status(201).json(newUser)
+})
 
-const getAllUsers = (req,res) => {
-    res.send("Get All the users")
-}
+const DeleteUser = asyncWrapper(async (req,res) => {
+    const {id} = req.params;
+    const deletedUser = await User.findByIdAndDelete({_id : id});
+
+    if(!deletedUser){
+        res.status(404).json({msg : "No such user Exists"});
+    }
+
+    res.status(200).json(deletedUser)
+})
+
+const UpdateUser = asyncWrapper (async(req,res) => {
+    const {id} = req.params;
+    const updatedInfo = req.body;
+
+    const user = await User.findByIdAndUpdate(id, updatedInfo);
+
+    if(!user){
+        res.status(404).json({msg : "No such user Exists"});
+    }
+
+    const updatedUser = await User.findById(id)
+
+    res.status(200).json(updatedUser)
+})
+
+const getAllUsers = asyncWrapper( async(req,res) => {
+    const AllUsers = await User.find({});
+    res.status(200).json({
+        users: AllUsers,
+        nbHits : AllUsers.length
+    })
+})
 
 module.exports = {
     getUser,
