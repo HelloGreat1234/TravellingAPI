@@ -9,10 +9,15 @@ const port = 3000;
 const notFoundMiddleware = require('./middlewares/notFound')
 
 const UserRouter = require('./routes/User')
+const AuthRouter = require('./routes/auth')
+const ItenaryRouter = require('./routes/Itenary')
 const connectDB = require('./db/connect')
 
 app.use(express.json())
 app.use('/api/v1/user',UserRouter)
+app.use('/api/v1/user',AuthRouter)
+app.use('/api/v1/itenary',ItenaryRouter)
+
 app.use(notFoundMiddleware)
 
 

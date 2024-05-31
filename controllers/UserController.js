@@ -1,7 +1,6 @@
 const User = require('../models/user')
 const asyncWrapper = require('../middlewares/aync')
 
-
 const getUser = asyncWrapper ( async (req,res) => {
     const {id} = req.params
     console.log(id)
@@ -12,10 +11,6 @@ const getUser = asyncWrapper ( async (req,res) => {
     res.status(200).json(user)
 })
 
-const CreateUser = asyncWrapper( async (req,res)=>{
-    const newUser = await User.create(req.body)
-    res.status(201).json(newUser)
-})
 
 const DeleteUser = asyncWrapper(async (req,res) => {
     const {id} = req.params;
@@ -53,7 +48,6 @@ const getAllUsers = asyncWrapper( async(req,res) => {
 
 module.exports = {
     getUser,
-    CreateUser,
     DeleteUser,
     UpdateUser,
     getAllUsers
