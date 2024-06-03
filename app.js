@@ -7,18 +7,21 @@ const app = express();
 const port = 3000;
 
 const notFoundMiddleware = require('./middlewares/notFound')
+const errorHandler = require('./middlewares/errorHandler')
 
 const UserRouter = require('./routes/User')
 const AuthRouter = require('./routes/auth')
 const ItenaryRouter = require('./routes/Itenary')
 const connectDB = require('./db/connect')
 
+
 app.use(express.json())
-app.use('/api/v1/user',UserRouter)
-app.use('/api/v1/user',AuthRouter)
-app.use('/api/v1/itenary',ItenaryRouter)
+app.use('/api/v1',UserRouter)
+app.use('/api/v1',AuthRouter)
+app.use('/api/v1',ItenaryRouter)
 
 app.use(notFoundMiddleware)
+app.use(errorHandler)
 
 
 const start = async() => {
